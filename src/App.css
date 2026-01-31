@@ -1,1 +1,73 @@
 @import "tailwindcss";
+
+/* Vercel-style Grid Background - Larger Squares */
+.grid-background {
+  background-color: #000000;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: -1px -1px;
+}
+
+.grid-background-large {
+  background-color: #000000;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 120px 120px;
+  background-position: -1px -1px;
+}
+
+/* Custom Scrollbar - Pure Black Theme */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle glow effect */
+.glow-effect {
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+}
+
+.glow-effect-strong {
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+}
+
+/* Subtle gradient text animation */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(90deg, #ffffff, #d0d0d0, #ffffff);
+  background-size: 200% auto;
+  animation: gradient-shift 4s ease infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

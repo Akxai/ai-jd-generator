@@ -1,85 +1,49 @@
-import { useState } from "react"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import Hero from "./pages/Hero";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Generator from "./pages/Generator";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
-  const [role, setRole] = useState("")
-  const [experience, setExperience] = useState("")
-  const [skills, setSkills] = useState("")
-  const [companyType, setCompanyType] = useState("")
-  const [result, setResult] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleGenerate = async () => {
-    if (!role) return alert("Role is required")
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
 
-    setLoading(true)
-    setResult("")
+    return () => unsubscribe();
+  }, []);
 
-    // TEMP MOCK (replace with AI later)
-    setTimeout(() => {
-      setResult(`
-Job Description:
-We are looking for a ${role} with ${experience} experience.
-
-Skills Required:
-${skills}
-
-Interview Questions:
-1. Explain your experience as a ${role}
-2. How have you used ${skills} in real projects?
-      `)
-      setLoading(false)
-    }, 1000)
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black grid-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
-        <h1 className="text-2xl font-bold mb-4">
-          AI Job Description Generator
-        </h1>
-
-        <input
-          className="w-full mb-3 p-2 border rounded"
-          placeholder="Role (e.g. Frontend Developer)"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
+    <Router>
+      <Routes>
+        <Route path="/" element={user ? <Navigate to="/generator" /> : <Hero />} />
+        <Route path="/login" element={user ? <Navigate to="/generator" /> : <Login />} />
+        <Route path="/signup" element={user ? <Navigate to="/generator" /> : <Signup />} />
+        <Route
+          path="/generator"
+          element={
+            <ProtectedRoute>
+              <Generator />
+            </ProtectedRoute>
+          }
         />
-
-        <input
-          className="w-full mb-3 p-2 border rounded"
-          placeholder="Experience (e.g. 3 years)"
-          value={experience}
-          onChange={(e) => setExperience(e.target.value)}
-        />
-
-        <input
-          className="w-full mb-3 p-2 border rounded"
-          placeholder="Skills (React, Node, SQL)"
-          value={skills}
-          onChange={(e) => setSkills(e.target.value)}
-        />
-
-        <input
-          className="w-full mb-4 p-2 border rounded"
-          placeholder="Company Type (Startup / Enterprise)"
-          value={companyType}
-          onChange={(e) => setCompanyType(e.target.value)}
-        />
-
-        <button
-          onClick={handleGenerate}
-          disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Generating..." : "Generate"}
-        </button>
-
-        {result && (
-          <pre className="mt-4 p-3 bg-gray-100 rounded whitespace-pre-wrap text-sm">
-            {result}
-          </pre>
-        )}
-      </div>
-    </div>
-  )
+      </Routes>
+    </Router>
+  );
 }
