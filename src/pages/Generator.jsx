@@ -341,11 +341,15 @@ Format it professionally and make it comprehensive.`
                 whileTap={{ scale: 0.98 }}
                 onClick={handleGenerate}
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r bg-white hover:bg-white/90 glow-effect-strong text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 bg-gradient-to-r bg-white hover:bg-white/90 glow-effect-strong text-black font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <>
-                    <RefreshCw className="w-5 h-5 animate-spin" />
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-5 h-5 border-3 border-black/30 border-t-black rounded-full"
+                    />
                     Generating...
                   </>
                 ) : (
@@ -442,9 +446,8 @@ Format it professionally and make it comprehensive.`
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    >
-                      <Sparkles className="w-6 h-6 text-white" />
-                    </motion.div>
+                      className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full"
+                    />
                     <span className="text-lg font-semibold">
                       Creating your job description...
                     </span>
